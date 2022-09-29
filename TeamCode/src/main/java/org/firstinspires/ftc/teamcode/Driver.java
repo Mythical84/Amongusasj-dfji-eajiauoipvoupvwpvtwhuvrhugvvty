@@ -15,8 +15,8 @@ public class Driver extends LinearOpMode{
         DcMotor frontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor backRight = hardwareMap.dcMotor.get("motorBackRight");
 
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
 
@@ -29,15 +29,38 @@ public class Driver extends LinearOpMode{
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+            if (rx == 0 || (y == 0 && x == 0)) {
 
-            frontLeft.setPower(frontLeftPower);
-            backLeft.setPower(backLeftPower);
-            frontRight.setPower(frontRightPower);
-            backRight.setPower(backRightPower);
+                double frontLeftPower = (y + x + rx) / denominator;
+                double backLeftPower = (y - x + rx) / denominator;
+                double frontRightPower = (y - x - rx) / denominator;
+                double backRightPower = (y + x - rx) / denominator;
+
+                frontLeft.setPower(frontLeftPower);
+                backLeft.setPower(backLeftPower);
+                frontRight.setPower(frontRightPower);
+                backRight.setPower(backRightPower);
+            } else if (x / 1.1 < 0.1 && x / 1.1 > -0.1 && y > 0.1 && rx > 0) {
+                double frontLeftPower = 1;
+                double backLeftPower = 1;
+                double frontRightPower = -0.5;
+                double backRightPower = -0.5;
+            } else if (x / 1.1 < 0.1 && x / 1.1 > -0.1 && y > 0.1 && rx < 0) {
+                double frontLeftPower = -0.5;
+                double backLeftPower = -0.5;
+                double frontRightPower = 1;
+                double backRightPower = 1;
+            } else if (x / 1.1 < 0.1 && x / 1.1 > -0.1 && y < 0.1 && rx > 0) {
+                double frontLeftPower = 0.5;
+                double backLeftPower = 0.5;
+                double frontRightPower = -1;
+                double backRightPower = -1;
+            } else if (x / 1.1 < 0.1 && x / 1.1 > -0.1 && y < 0.1 && rx < 0) {
+                double frontLeftPower = -1;
+                double backLeftPower = -1;
+                double frontRightPower = 0.5;
+                double backRightPower = 0.5;
+            }
         }
     }
 }
