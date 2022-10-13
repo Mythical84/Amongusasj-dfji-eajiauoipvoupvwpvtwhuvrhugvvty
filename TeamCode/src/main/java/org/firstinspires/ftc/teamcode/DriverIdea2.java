@@ -14,6 +14,7 @@ public class DriverIdea2 extends LinearOpMode{
         DcMotor backLeft = hardwareMap.dcMotor.get("motorBackLeft");
         DcMotor frontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor backRight = hardwareMap.dcMotor.get("motorBackRight");
+        DcMotor scissor = hardwareMap.dcMotor.get("scissor");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -26,6 +27,16 @@ public class DriverIdea2 extends LinearOpMode{
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
+            boolean a = gamepad1.a;
+            boolean b = gamepad1.b;
+
+            if (a == true) {
+                scissor.setPower(1.0);
+            } else if (b == true) {
+                scissor.setPower(-1.0);
+            } else {
+                scissor.setPower(0);
+            }
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
