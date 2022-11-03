@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name = "DriverIdea2")
-public class DriverIdea2 extends LinearOpMode{
+@TeleOp(name = "Drive")
+public class Drive extends LinearOpMode{
     @Override
     public void runOpMode() {
 
@@ -15,6 +15,7 @@ public class DriverIdea2 extends LinearOpMode{
         DcMotor frontRight = hardwareMap.dcMotor.get("motorFrontRight");
         DcMotor backRight = hardwareMap.dcMotor.get("motorBackRight");
         DcMotor scissor = hardwareMap.dcMotor.get("scissor");
+        DcMotor beanlift = hardwareMap.dcMotor.get("beanlift");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -27,15 +28,16 @@ public class DriverIdea2 extends LinearOpMode{
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
-            boolean a = gamepad1.a;
-            boolean b = gamepad1.b;
 
-            if (a == true) {
+            if (gamepad1.a) {
                 scissor.setPower(1.0);
-            } else if (b == true) {
+                beanlift.setPower(-1.0);
+            } else if (gamepad1.b) {
                 scissor.setPower(-1.0);
+                beanlift.setPower(1.0);
             } else {
                 scissor.setPower(0);
+                beanlift.setPower(0);
             }
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
