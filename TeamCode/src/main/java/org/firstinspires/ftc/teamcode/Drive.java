@@ -25,9 +25,20 @@ public class Drive extends LinearOpMode{
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+            double rx = gamepad1.right_stick_x;
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x * 1.1;
-            double rx = gamepad1.right_stick_x;
+
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+            double frontLeftPower = (y + x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
+            double frontRightPower = (y - x - rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
+
+            frontLeft.setPower(frontLeftPower);
+            backLeft.setPower(backLeftPower);
+            frontRight.setPower(frontRightPower);
+            backRight.setPower(backRightPower);
 
             if (gamepad1.a) {
                 scissor.setPower(1.0);
@@ -40,34 +51,8 @@ public class Drive extends LinearOpMode{
                 beanlift.setPower(0);
             }
 
-            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-
-            double frontLeftPower;
-            double backLeftPower;
-            double frontRightPower;
-            double backRightPower;
-
-            if (rx > 0) {
-                frontLeftPower = rx;
-                backLeftPower = rx;
-                frontRightPower = -rx;
-                backRightPower = -rx;
-            } else if (rx < 0) {
-                frontLeftPower = rx;
-                backLeftPower = rx;
-                frontRightPower = -rx;
-                backRightPower = -rx;
-            } else {
-                frontLeftPower = (y + x + rx) / denominator;
-                backLeftPower = (y - x + rx) / denominator;
-                frontRightPower = (y - x - rx) / denominator;
-                backRightPower = (y + x - rx) / denominator;
-            }
-
-            frontLeft.setPower(frontLeftPower);
-            backLeft.setPower(backLeftPower);
-            frontRight.setPower(frontRightPower);
-            backRight.setPower(backRightPower);
+            //TODO: Gripper servo
         }
     }
+
 }
